@@ -50,9 +50,9 @@ module.exports ={
     // Simpan data karyawan
     addDataUser(req,res){
         let data = {
-            nama: req.body.nama,
+            nama: req.body.name,
             email : req.body.email,
-            password : req.body.password,
+            password : req.body.pass,
         }
         pool.getConnection(function(err, connection) {
             if (err) throw err;
