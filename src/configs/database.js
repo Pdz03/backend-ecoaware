@@ -1,7 +1,7 @@
 module.exports = {
     multipleStatements  : true,
-    host                : 'localhost',
+    host                : process.env.MYSQLHOST,
     user                : 'root',
-    password            : '',
-    database            : 'db_ecoaware'
+    password            : process.env.MYSQLPASSWORD,
+    database            : process.env.MYSQLDATABASE
 };
