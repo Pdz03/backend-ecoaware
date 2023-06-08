@@ -13,7 +13,7 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM user;
+                SELECT * FROM tb_user;
                 `
             , function (error, results) {
                 if(error) throw error;  
@@ -33,7 +33,7 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `
-                SELECT * FROM user WHERE id = ?;
+                SELECT * FROM tb_user WHERE id = ?;
                 `
             , [id],
             function (error, results) {
@@ -58,7 +58,7 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `
-                INSERT INTO user SET ?;
+                INSERT INTO tb_user SET ?;
                 `
             , [data],
             function (error, results) {
@@ -83,7 +83,7 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `
-                UPDATE user SET ? WHERE id = ?;
+                UPDATE tb_user SET ? WHERE id = ?;
                 `
             , [dataEdit, id],
             function (error, results) {
@@ -103,7 +103,7 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `
-                DELETE FROM user WHERE id = ?;
+                DELETE FROM tb_user WHERE id = ?;
                 `
             , [id],
             function (error, results) {
