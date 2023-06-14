@@ -19,7 +19,7 @@ module.exports ={
                 if(error) throw error;  
                 res.send({ 
                     success: true, 
-                    message: 'Berhasil ambil data!',
+                    message: 'Berhasil ambil data!!',
                     data: results 
                 });
             });
