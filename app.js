@@ -29,6 +29,7 @@ app.use(session({
   saveUninitialized: true,
   store: sessionStore,
   cookie: {
+    sameSite: 'none',
     secure: false, // ubah menjadi true jika menggunakan HTTPS
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // contoh: sesi berlaku selama 1 hari (dalam milidetik)
