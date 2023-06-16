@@ -1,8 +1,11 @@
 var cors = require('cors')
 const express = require('express');
 const session = require('express-session');
+const config = require('./src/configs/database');
 const bodyParser = require('body-parser');
+const MySQLStore = require('express-mysql-session')(session);
 const app = express();
+const mysql = require('mysql2');
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -12,11 +15,17 @@ app.use(cors({
   credentials: true,
 }));
 
+const connection = mysql.createPool(config);
+
+// Buat penyimpanan sesi dengan MySQLStore
+const sessionStore = new MySQLStore({}, connection);
+
 app.use(session({
   secret: 't@1k0ch3ng',
   name: 'secretName',
   resave: false,
   saveUninitialized: true,
+  store: sessionStore,
   cookie: {
     secure: false, // ubah menjadi true jika menggunakan HTTPS
     httpOnly: true,
