@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(cors({
-  origin: 'http://localhost:9000', // Sesuaikan dengan URL front-end Anda
   credentials: true,
 }));
 
