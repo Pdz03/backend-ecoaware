@@ -1,5 +1,5 @@
 module.exports ={
-isAuthenticated (req, res, next){
+isAuthenticate: (req, res, next) => {
     if (req.session.userId) {
       // Pengguna terautentikasi, lanjutkan ke rute berikutnya
       next();
