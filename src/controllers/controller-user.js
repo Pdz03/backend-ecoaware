@@ -76,7 +76,8 @@ module.exports ={
 
                   let dataLogin = {
                     name : user.nama,
-                    email : user.email
+                    email : user.email,
+                    level : user.level,
                   }
           
                   res.json({dataLogin, success: true, message: 'Berhasil ambil data!' });
