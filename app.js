@@ -10,9 +10,7 @@ const mysql = require('mysql2');
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use(cors({
-  credentials: true,
-}));
+app.use(cors());
 
 const connection = mysql.createPool(config);
 
