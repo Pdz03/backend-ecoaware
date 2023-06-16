@@ -30,6 +30,11 @@ app.use(session({
   },
 }))
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000');
+  next();
+});
+
 const appRoute = require('./src/routes/route-user');
 app.use('/', appRoute);
 
