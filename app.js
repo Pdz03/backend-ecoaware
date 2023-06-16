@@ -1,4 +1,3 @@
-var cors = require('cors')
 const express = require('express');
 const session = require('express-session');
 const config = require('./src/configs/database');
@@ -9,13 +8,6 @@ const mysql = require('mysql2');
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
-// const corsOptions = {
-//   origin: 'https://ecoaware-apps.netlify.app',
-//   credentials: true,
-// };
-
-// app.use(cors(corsOptions));
 
 const connection = mysql.createPool(config);
 
@@ -37,7 +29,7 @@ app.use(session({
 }))
 
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://ecoaware-apps.netlify.app'); // Ganti dengan domain front-end yang digunakan
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000'); // Ganti dengan domain front-end yang digunakan
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Jika menggunakan kredensial (misalnya: cookie)
