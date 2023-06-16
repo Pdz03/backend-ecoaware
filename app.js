@@ -10,7 +10,12 @@ const mysql = require('mysql2');
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:9000',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 const connection = mysql.createPool(config);
 
@@ -30,10 +35,10 @@ app.use(session({
   },
 }))
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000');
+//   next();
+// });
 
 const appRoute = require('./src/routes/route-user');
 app.use('/', appRoute);
