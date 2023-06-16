@@ -35,10 +35,13 @@ app.use(session({
   },
 }))
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000');
-//   next();
-// });
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000'); // Ganti dengan domain front-end yang digunakan
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Jika menggunakan kredensial (misalnya: cookie)
+  next();
+});
 
 const appRoute = require('./src/routes/route-user');
 app.use('/', appRoute);
