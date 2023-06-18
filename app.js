@@ -29,15 +29,17 @@ app.use(session({
   saveUninitialized: true,
   store: sessionStore,
   cookie: {
-    sameSite: 'none',
-    secure: true, // ubah menjadi true jika menggunakan HTTPS
-    httpOnly: true,
+    // sameSite: 'none',
+    secure: false, // ubah menjadi true jika menggunakan HTTPS
+    // httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // contoh: sesi berlaku selama 1 hari (dalam milidetik)
   },
 }))
 
+app.use(express.static('src/uploads'));
+
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://ecoaware-apps.netlify.app'); // Ganti dengan domain front-end yang digunakan
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000'); // Ganti dengan domain front-end yang digunakan
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true'); // Jika menggunakan kredensial (misalnya: cookie)

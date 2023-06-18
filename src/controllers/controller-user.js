@@ -5,6 +5,7 @@ const pool = mysql.createPool(config);
 const uuid = require('uuid');
 const dayjs = require('dayjs');
 
+
 pool.on('error',(err)=> {
     console.error(err);
 });
@@ -75,6 +76,7 @@ module.exports ={
                   const user = results[0];
 
                   let dataLogin = {
+                    id : user.id,
                     name : user.nama,
                     email : user.email,
                     level : user.level,
@@ -212,6 +214,108 @@ module.exports ={
                 });
               });
         })
+    },
+
+    addArtikel(req,res){
+      function generateRandomId() {
+          return uuid.v4(); // Menggunakan versi 4 UUID sebagai nomor acak
+        }
+    
+        const now = new Date();
+        const timestamp = dayjs(now).format('MMDDss');
+        const genId = generateRandomId();
+        const numericUuid = genId.replace(/\D/g, '');
+        const limitedId = numericUuid.substring(0, 4);
+        const userId = `${timestamp}${limitedId}`;
+
+        const gambar = req.file.filename;
+
+      let data = {
+          id: userId,
+          authorID : req.session.userId,
+          author: req.body.author,
+          tanggal : req.body.tanggal,
+          judul : req.body.judul,
+          isi : req.body.isi,
+      }
+      pool.getConnection(function(err, connection) {
+          if (err) throw err;
+          
+          connection.query(
+              `
+              INSERT INTO tb_artikel (id, author, authorID, tanggal, judul, gambar, isi, acc) VALUES (?, ?, ?, ?, ?, ?, '0');
+              `
+          , [data.id, data.author, data.authorID, data.tanggal, data.judul, gambar, data.isi],
+          function (error, results) {
+              if(error) throw error;  
+              res.send({ 
+                  success: true, 
+                  message: 'Berhasil tambah data!',
+              });
+          });
+          connection.release();
+      });
+    },
+
+    getArtikel(req,res){
+      pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query(
+            `
+            SELECT * FROM tb_artikel;
+            `
+        , function (error, results) {
+            if(error) throw error;  
+            res.send({ 
+                success: true, 
+                message: 'Berhasil ambil data!!',
+                data: results 
+            });
+        });
+        connection.release();
+    })
+    },
+
+    getArtikelCreated(req,res){
+      let id = req.params.id;
+      pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query(
+          `
+          SELECT * FROM tb_artikel WHERE authorID = ?;
+          `
+      , [id],
+      function (error, results) {
+            if(error) throw error;  
+            res.send({ 
+                success: true, 
+                message: 'Berhasil ambil data!!',
+                data: results 
+            });
+        });
+        connection.release();
+    })
+    },
+
+    getDetailArtikelByID(req,res){
+      let id = req.params.id;
+      pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query(
+          `
+          SELECT * FROM tb_artikel WHERE id = ?;
+          `
+      , [id],
+      function (error, results) {
+            if(error) throw error;  
+            res.send({ 
+                success: true, 
+                message: 'Berhasil ambil data!!',
+                data: results 
+            });
+        });
+        connection.release();
+    })
     },
     // Update data karyawan
     editDataUser(req,res){
