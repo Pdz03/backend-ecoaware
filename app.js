@@ -1,4 +1,3 @@
-var cors = require('cors')
 const express = require('express');
 const session = require('express-session');
 const config = require('./src/configs/database');
@@ -9,13 +8,6 @@ const mysql = require('mysql2');
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
-// const corsOptions = {
-//   origin: 'https://ecoaware-apps.netlify.app',
-//   credentials: true,
-// };
-
-// app.use(cors(corsOptions));
 
 const connection = mysql.createPool(config);
 
@@ -31,7 +23,7 @@ app.use(session({
   cookie: {
     // sameSite: 'none',
     secure: false, // ubah menjadi true jika menggunakan HTTPS
-    // httpOnly: true,
+    httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // contoh: sesi berlaku selama 1 hari (dalam milidetik)
   },
 }))
