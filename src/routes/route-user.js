@@ -3,6 +3,9 @@ const router = require('express').Router();
 const { user } = require('../controllers');
 
 const multer = require('multer');
+const Mega = require('megajs');
+const fs = require('fs');
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'src/uploads/');
@@ -14,7 +17,56 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// GET localhost:8080/karyawan => Ambil data semua karyawan
+router.post('/upload', upload.single('image'), async (req, res) => {
+  try {
+    const { path, originalname } = req.file;
+
+    const megaStorage = new Mega.Storage({
+      email: 'syaifudinfendip@gmail.com',
+      password: 'akunMEGA@351',
+      autoload: false // Menonaktifkan autoload agar bisa menunggu autentikasi selesai
+    });
+
+    megaStorage.on('ready', async () => {
+      try {
+        if (!megaStorage.root) {
+          throw new Error('Objek megaStorage belum siap');
+        }
+
+        const file = await megaStorage.root.upload({
+          name: originalname,
+          size: req.file.size,
+          attributes: {
+            filename: originalname
+          },
+          stream: fs.createReadStream(path)
+        });
+
+        // Menghapus file yang diupload setelah berhasil diunggah ke Mega
+        fs.unlinkSync(path);
+
+        console.log('File berhasil diunggah ke Mega:', file);
+
+        res.status(200).json({ success: true, message: 'File berhasil diunggah ke Mega' });
+      } catch (error) {
+        console.error('Terjadi kesalahan:', error);
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengunggah file' });
+      }
+    });
+
+    megaStorage.on('error', (error) => {
+      console.error('Terjadi kesalahan saat menginisialisasi megaStorage:', error);
+      res.status(500).json({ success: false, message: 'Terjadi kesalahan saat menginisialisasi megaStorage' });
+    });
+
+    megaStorage.login();
+  } catch (error) {
+    console.error('Terjadi kesalahan:', error);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan saat mengunggah file' });
+  }
+});
+
+
 router.get('/user', user.getDataUser);
 
 router.get('/user/all', user.allDataUser);

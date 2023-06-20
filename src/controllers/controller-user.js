@@ -302,6 +302,8 @@ module.exports ={
           judul : req.body.judul,
           isi : req.body.isi,
       }
+
+      console.log(data, gambar);
       pool.getConnection(function(err, connection) {
           if (err) throw err;
           
